@@ -14,10 +14,13 @@ player_O_score = 0
 
 
 def creating_assets():
-    global playing_square,vertical_line,horizontal_line, font
+    global playing_square,vertical_line,horizontal_line, font,font2
+
+    #the middle square where game will be played
     playing_square = pygame.Surface((500,500))
     playing_square.fill((47,79,79))
 
+    #basic lines for visuals
     vertical_line = pygame.Surface((5,500))
     vertical_line.fill((0,0,0))
 
@@ -25,11 +28,12 @@ def creating_assets():
     horizontal_line.fill((0,0,0))
 
     font = pygame.font.Font("luckiest-guy/LuckiestGuy.ttf",50)
-
-    rect_00 = pygame.Rect()
+    font2 = pygame.font.Font("luckiest-guy/LuckiestGuy.ttf",200)
+    
     
 
-def playing_field():
+def visuals():
+    global big_o,big_x
     screen.fill((105,105,105))
     screen.blit(playing_square,(100,100))
 
@@ -50,15 +54,36 @@ def playing_field():
 
     screen.blit(turn,turn_rect)
 
-    big_x = font.render("X",True,(0,0,0))
-    big_o = font.render("O",True,(0,0,0))
+    big_x = font2.render("X",True,(0,0,0))
+    big_o = font2.render("O",True,(0,0,0))
 
+def playing_field():
+    global rect_0_0,rect_0_1, rect_0_2
+    global rect_1_0,rect_1_1,rect_1_2
+    global rect_2_0,rect_2_1,rect_2_2
+
+    # first row of squares
+    rect_0_0 = pygame.Rect(100,100,167,167)
+    rect_0_1 = pygame.Rect(266,100,167,167)
+    rect_0_2 = pygame.Rect(432,100,167,167)
+    # second row
+    rect_1_0 = pygame.Rect(100,266,167,167)
+    rect_1_1 = pygame.Rect(266,266,167,167)
+    rect_1_2 = pygame.Rect(432,266,167,167)
+    #third row
+    rect_2_0 = pygame.Rect(100,432,167,167)
+    rect_2_1 = pygame.Rect(266,432,167,167)
+    rect_2_2 = pygame.Rect(432,432,167,167)
 
 creating_assets()
+playing_field()
+
 
 while running:
-    playing_field()
+    visuals()
     #screen.fill((47,79,79))
+    pygame.draw.rect(screen,(0,0,0),rect_2_2)
+    screen.blit(big_x,rect_0_0)
     for  event in pygame.event.get():
         keys = pygame.key.get_pressed()
         if event.type == pygame.QUIT:
@@ -74,7 +99,9 @@ while running:
 
                 elif player_turn == "O":
                     player_turn = "X"
-            
+
+    if rect_0_0.collidepoint(pygame.mouse.get_pos()):
+        print(1)
 
     pygame.display.update()
     clock.tick(60)
